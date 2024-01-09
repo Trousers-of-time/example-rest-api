@@ -75,7 +75,7 @@ router.delete('*', cors(corsOptions), (req, res, next) => {
 
 router.get('/tags', async (req, res) => {
     try {
-      const query = 'SELECT id, tag_name AS "tagName" FROM tags';
+      const query = 'SELECT id, tag_name AS "tagName" FROM tags ORDER BY tag_name ASC';
       const tags = await dbQuery(query);
       res.json(tags);
     } catch (error) {
@@ -236,6 +236,7 @@ router.get('/:eventId/tags', async (req, res) => {
       FROM tags
       JOIN events_tags ON tags.id = events_tags.tag_id
       WHERE events_tags.event_id = $1
+      ORDER BY tags.tag_name ASC
     `;
     const tags = await dbQuery(query, [eventId]);
     console.log(tags)
